@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shalimar Gardens, Lahore — Charbagh Collective</title>
+  <meta name="description" content="Explore Shalimar Gardens, Lahore — a 17th-century Mughal UNESCO World Heritage Site. Interactive heritage showcase by Charbagh Collective (PMW × TechRealm)." />
+  <meta property="og:title" content="Shalimar Gardens, Lahore — Charbagh Collective" />
+  <meta property="og:description" content="Where Water, Symmetry, and Empire Meet. An interactive heritage showcase of the 1641 Mughal garden." />
+  <meta name="theme-color" content="#8B2E2E" />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Google Fonts: Cormorant Garamond (display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===================================================
+       DESIGN TOKENS
+    =================================================== */
+    :root {
+      --red:        #8B2E2E;
+      --red-dark:   #5C1A1A;
+      --red-light:  #B85555;
+      --cream:      #F5EFE6;
+      --cream-dark: #E8DDD0;
+      --gold:       #C9A227;
+      --gold-light: #E5BF5A;
+      --teal:       #1C2B33;
+      --teal-light: #2E4655;
+      --white:      #FFFFFF;
+      --text-dark:  #1A1008;
+      --text-mid:   #4A3728;
+      --text-light: #8A7060;
+
+      --ff-display: 'Cormorant Garamond', Georgia, serif;
+      --ff-body:    'Inter', system-ui, sans-serif;
+
+      --axis-width: 2px;
+      --section-pad: clamp(3rem, 8vw, 6rem);
+      --gap-lg: clamp(2rem, 5vw, 4rem);
+      --gap-md: clamp(1rem, 3vw, 2rem);
+      --gap-sm: 1rem;
+
+      --radius: 4px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ===================================================
+       RESET & BASE
+    =================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: clamp(15px, 1.1vw, 17px);
+    }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+
+    a {
+      color: var(--red);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color var(--transition);
+    }
+    a:hover { color: var(--gold); }
+
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ===================================================
+       TYPOGRAPHY SCALE
+    =================================================== */
+    h1, h2, h3, h4 {
+      font-family: var(--ff-display);
+      line-height: 1.15;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    h1 { font-size: clamp(3rem, 8vw, 7rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+    h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+    h4 { font-size: clamp(1.1rem, 1.8vw, 1.4rem); }
+
+    .label {
+      font-family: var(--ff-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    em { font-style: italic; color: var(--gold); }
+
+    /* ===================================================
+       UTILITY CLASSES
+    =================================================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 4vw, 3rem);
+    }
+
+    .section-label {
+      display: block;
+      font-family: var(--ff-body);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .gold-line {
+      display: block;
+      width: 3rem;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.2rem auto;
+    }
+
+    .axis-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: var(--axis-width);
+      background: linear-gradient(to bottom, transparent, var(--gold) 15%, var(--gold) 85%, transparent);
+      opacity: 0.35;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    /* ===================================================
+       NAV
+    =================================================== */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0.8rem 0;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+
+    #site-nav.scrolled {
+      background: rgba(28, 43, 51, 0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-brand {
+      font-family: var(--ff-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-brand img {
+      height: 44px;
+      width: 44px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .nav-brand img { height: 32px; width: 32px; }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.3rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--cream-dark);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 0.4rem 0.7rem;
+      border-radius: var(--radius);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+      background: rgba(201,162,39,0.1);
+    }
+
+    .nav-menu-btn {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--radius);
+      color: var(--cream);
+      padding: 0.4rem 0.7rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(28,43,51,0.98); padding: 1rem; gap: 0.1rem; }
+      .nav-links.open { display: flex; }
+      .nav-menu-btn { display: block; }
+      #site-nav { background: rgba(28,43,51,0.96); }
+    }
+
+    /* ===================================================
+       SECTION 1 — HERO
+    =================================================== */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--teal);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Shalimar_Garden_Lahore.jpg/1280px-Shalimar_Garden_Lahore.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      filter: brightness(0.42) saturate(0.8);
+      transform: scale(1.03);
+      animation: heroZoom 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.03); }
+      to   { transform: scale(1.08); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(28,43,51,0.2) 0%,
+        rgba(92,26,26,0.25) 40%,
+        rgba(28,43,51,0.7) 100%
+      );
+    }
+
+    /* Central axis line through hero */
+    .hero-axis {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(201,162,39,0.6) 30%, rgba(201,162,39,0.6) 70%, transparent);
+      transform: translateX(-50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: var(--section-pad) var(--gap-md);
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(201,162,39,0.18);
+      border: 1px solid rgba(201,162,39,0.4);
+      padding: 0.35rem 1rem;
+      border-radius: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-eyebrow span {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+
+    .hero-title {
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      line-height: 1.0;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.5);
+    }
+
+    .hero-axis-word {
+      display: block;
+      width: 2px;
+      height: clamp(1.5rem, 4vw, 2.5rem);
+      background: var(--gold);
+      margin: 0.4rem auto;
+      opacity: 0.7;
+    }
+
+    .hero-subtitle {
+      font-family: var(--ff-display);
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      color: var(--cream-dark);
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream-dark);
+      border: 1px solid rgba(245,239,230,0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+    }
+
+    .hero-tag.danger { border-color: rgba(255,100,100,0.5); color: #ff9999; }
+
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(245,239,230,0.6);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      animation: bounceDown 1.8s ease-in-out infinite;
+    }
+
+    @keyframes bounceDown {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(4px); }
+    }
+
+    /* ===================================================
+       SECTION 2 — OVERVIEW
+    =================================================== */
+    #overview {
+      background: var(--teal);
+      color: var(--cream);
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 2px 1fr;
+      gap: 0 var(--gap-lg);
+      align-items: start;
+    }
+
+    .overview-divider {
+      background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+      opacity: 0.4;
+      align-self: stretch;
+    }
+
+    .overview-block { padding: var(--gap-md) 0; }
+
+    .overview-block h2 { color: var(--cream); margin-bottom: 1.2rem; }
+    .overview-block p  { color: rgba(245,239,230,0.82); margin-bottom: 1rem; font-size: 0.95rem; }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap-md);
+      margin-top: var(--gap-md);
+    }
+
+    .stat-card {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      border: 1px solid rgba(201,162,39,0.25);
+      padding: 1.2rem 0.8rem;
+      border-radius: var(--radius);
+      background: rgba(201,162,39,0.04);
+    }
+
+    .stat-num {
+      font-family: var(--ff-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,239,230,0.55);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    @media (max-width: 700px) {
+      .overview-grid { grid-template-columns: 1fr; }
+      .overview-divider { display: none; }
+    }
+
+    /* ===================================================
+       SECTION 3 — TIMELINE
+    =================================================== */
+    #timeline {
+      padding: var(--section-pad) 0;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    .timeline-header { text-align: center; margin-bottom: var(--gap-lg); }
+    .timeline-header h2 { color: var(--red-dark); }
+
+    .timeline-track {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+      cursor: grab;
+    }
+
+    .timeline-track::-webkit-scrollbar { height: 4px; }
+    .timeline-track::-webkit-scrollbar-track { background: var(--cream-dark); }
+    .timeline-track::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    .timeline-track.grabbing { cursor: grabbing; }
+
+    .tl-item {
+      flex: 0 0 clamp(220px, 30vw, 320px);
+      scroll-snap-align: start;
+      padding: 2rem 1.8rem;
+      border-right: 2px solid var(--cream-dark);
+      position: relative;
+      transition: background var(--transition);
+    }
+
+    .tl-item:hover { background: rgba(139,46,46,0.04); }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      left: -6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--gold);
+    }
+
+    .tl-item:first-child { padding-left: 1.5rem; }
+
+    .tl-year {
+      font-family: var(--ff-display);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .tl-event {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      line-height: 1.55;
+    }
+
+    .tl-item.danger .tl-year { color: #a33; }
+    .tl-item.danger .tl-item-dot { background: #c44; }
+    .tl-item.danger::before { background: #c44; box-shadow: 0 0 0 2px #c44; }
+
+    .tl-item.present .tl-year { color: var(--teal); }
+    .tl-item.present::before { background: var(--teal); box-shadow: 0 0 0 2px var(--teal); }
+
+    .tl-connector {
+      position: absolute;
+      bottom: 2.9rem;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--cream-dark);
+    }
+
+    .tl-scroll-hint {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ===================================================
+       SECTION 4 — THREE TERRACES
+    =================================================== */
+    #terraces {
+      background: var(--red-dark);
+      padding: var(--section-pad) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #terraces .axis-line {
+      background: linear-gradient(to bottom, transparent, rgba(201,162,39,0.4) 15%, rgba(201,162,39,0.4) 85%, transparent);
+    }
+
+    .terraces-header { text-align: center; margin-bottom: var(--gap-lg); position: relative; z-index: 1; }
+    .terraces-header h2 { color: var(--cream); }
+    .terraces-header p { color: rgba(245,239,230,0.65); max-width: 620px; margin: 1rem auto 0; font-size: 0.92rem; }
+
+    .terraces-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--gap-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .terrace-card {
+      background: rgba(245,239,230,0.06);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: transform var(--transition), background var(--transition);
+    }
+
+    .terrace-card:hover {
+      transform: translateY(-4px);
+      background: rgba(245,239,230,0.1);
+    }
+
+    .terrace-card:nth-child(1) { margin-top: 0; }
+    .terrace-card:nth-child(2) { margin-top: clamp(1rem, 3vw, 2rem); }
+    .terrace-card:nth-child(3) { margin-top: clamp(2rem, 6vw, 4rem); }
+
+    .terrace-elevation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+      background: rgba(201,162,39,0.12);
+      padding: 0.25rem 0.7rem;
+      border-radius: 2rem;
+    }
+
+    .terrace-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1.2rem;
+      opacity: 0.85;
+    }
+
+    .terrace-card h3 {
+      color: var(--gold);
+      font-size: 1.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .terrace-name-en {
+      font-family: var(--ff-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,239,230,0.5);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .terrace-card p {
+      font-size: 0.875rem;
+      color: rgba(245,239,230,0.75);
+      line-height: 1.6;
+    }
+
+    .terrace-shape {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,239,230,0.4);
+      border: 1px solid rgba(245,239,230,0.15);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .terraces-grid { grid-template-columns: 1fr; }
+      .terrace-card:nth-child(1),
+      .terrace-card:nth-child(2),
+      .terrace-card:nth-child(3) { margin-top: 0; }
+    }
+
+    /* ===================================================
+       SECTION 5 — WATER SYSTEM
+    =================================================== */
+    #water {
+      background: var(--teal);
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .water-intro { text-align: center; margin-bottom: var(--gap-lg); }
+    .water-intro h2 { color: var(--cream); }
+    .water-intro p  { color: rgba(245,239,230,0.7); max-width: 650px; margin: 1rem auto 0; font-size: 0.95rem; }
+
+    .water-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-lg);
+      align-items: start;
+    }
+
+    /* Animated water flow diagram */
+    .water-diagram {
+      background: rgba(245,239,230,0.04);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+    }
+
+    .flow-diagram {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-node {
+      width: 100%;
+      max-width: 340px;
+      background: rgba(201,162,39,0.08);
+      border: 1px solid rgba(201,162,39,0.3);
+      border-radius: var(--radius);
+      padding: 0.9rem 1.2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .flow-node-title {
+      font-family: var(--ff-display);
+      font-size: 1.05rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .flow-node-sub {
+      font-size: 0.72rem;
+      color: rgba(245,239,230,0.6);
+      margin-top: 0.2rem;
+      letter-spacing: 0.05em;
+    }
+
+    .flow-arrow {
+      width: 2px;
+      height: 36px;
+      background: linear-gradient(to bottom, rgba(100,180,255,0.7), rgba(100,180,255,0.3));
+      position: relative;
+      overflow: visible;
+    }
+
+    .flow-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid rgba(100,180,255,0.7);
+    }
+
+    .water-drop {
+      position: absolute;
+      width: 4px;
+      height: 8px;
+      border-radius: 2px;
+      background: rgba(100,200,255,0.8);
+      left: 50%;
+      transform: translateX(-50%);
+      animation: dropFall 1.8s linear infinite;
+    }
+
+    .water-drop:nth-child(2) { animation-delay: 0.6s; }
+    .water-drop:nth-child(3) { animation-delay: 1.2s; }
+
+    @keyframes dropFall {
+      0%   { top: -2px; opacity: 0; }
+      20%  { opacity: 1; }
+      100% { top: 38px; opacity: 0; }
+    }
+
+    .flow-cascade-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(100,200,255,0.6);
+      margin: -4px 0;
+      text-align: right;
+      width: 100%;
+      max-width: 340px;
+      padding-right: 0.5rem;
+    }
+
+    /* Fountain bar chart */
+    .water-chart { }
+    .chart-title {
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+    .chart-sub { font-size: 0.8rem; color: rgba(245,239,230,0.55); margin-bottom: 1.5rem; }
+
+    .chart-bars { display: flex; flex-direction: column; gap: 1rem; }
+
+    .chart-bar-row { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .chart-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(245,239,230,0.7);
+    }
+
+    .chart-bar-label strong { font-family: var(--ff-display); font-size: 1.1rem; color: var(--gold); }
+
+    .chart-bar-track {
+      height: 14px;
+      background: rgba(245,239,230,0.08);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      border-radius: 7px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+      background: linear-gradient(to right, rgba(100,180,255,0.5), rgba(100,200,255,0.9));
+    }
+
+    .chart-bar-fill.gold {
+      background: linear-gradient(to right, rgba(201,162,39,0.5), rgba(201,162,39,0.9));
+    }
+
+    .chart-total {
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(201,162,39,0.2);
+      font-size: 0.8rem;
+      color: rgba(245,239,230,0.55);
+    }
+
+    .water-facts {
+      margin-top: var(--gap-md);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-sm);
+    }
+
+    .water-fact {
+      background: rgba(245,239,230,0.04);
+      border: 1px solid rgba(201,162,39,0.15);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+
+    .water-fact-num {
+      font-family: var(--ff-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: rgba(100,200,255,0.85);
+      line-height: 1;
+    }
+
+    .water-fact p {
+      font-size: 0.75rem;
+      color: rgba(245,239,230,0.55);
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .water-layout { grid-template-columns: 1fr; }
+      .water-facts { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===================================================
+       CASCADE MEDIA SLOT
+    =================================================== */
+    .cascade-media-slot {
+      margin: var(--gap-lg) 0 0;
+      background: rgba(0,0,0,0.2);
+      border: 2px dashed rgba(201,162,39,0.3);
+      border-radius: var(--radius);
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cascade-media-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      opacity: 0.6;
+    }
+
+    .cascade-slot-label {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: rgba(245,239,230,0.7);
+    }
+
+    .cascade-slot-label p { font-size: 0.75rem; color: rgba(245,239,230,0.45); margin-top: 0.3rem; }
+
+    /* ===================================================
+       SECTION 6 — SYMMETRY
+    =================================================== */
+    #symmetry {
+      background: var(--cream);
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .symmetry-layout {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--gap-md);
+      align-items: center;
+    }
+
+    .symmetry-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .symmetry-col.right { text-align: right; }
+
+    .sym-fact {
+      padding: 1.2rem 1.5rem;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--cream-dark);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .sym-fact:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    }
+
+    .sym-fact h4 { font-size: 1.05rem; color: var(--red-dark); margin-bottom: 0.4rem; }
+    .sym-fact p  { font-size: 0.83rem; color: var(--text-mid); line-height: 1.55; }
+
+    .symmetry-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 0.5rem;
+    }
+
+    .axis-visual {
+      width: 3px;
+      height: 340px;
+      background: linear-gradient(to bottom, transparent, var(--gold) 10%, var(--gold) 90%, transparent);
+      position: relative;
+    }
+
+    .axis-dot {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .axis-dot:nth-child(1) { top: 15%; }
+    .axis-dot:nth-child(2) { top: 50%; }
+    .axis-dot:nth-child(3) { top: 85%; }
+
+    .symmetry-quote {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: var(--gap-md) 0;
+      border-top: 1px solid var(--cream-dark);
+      margin-top: var(--gap-md);
+    }
+
+    .symmetry-quote blockquote {
+      font-family: var(--ff-display);
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-style: italic;
+      color: var(--red-dark);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 700px) {
+      .symmetry-layout { grid-template-columns: 1fr; }
+      .symmetry-center { display: none; }
+      .symmetry-col.right { text-align: left; }
+    }
+
+    /* ===================================================
+       SECTION 7 — 3D RECONSTRUCTION
+    =================================================== */
+    #reconstruction {
+      background: var(--teal);
+      padding: var(--section-pad) 0;
+    }
+
+    .recon-header { text-align: center; margin-bottom: var(--gap-lg); }
+    .recon-header h2 { color: var(--cream); }
+    .recon-header p  { color: rgba(245,239,230,0.65); max-width: 620px; margin: 1rem auto 0; font-size: 0.95rem; }
+
+    .recon-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-md);
+      margin-bottom: var(--gap-lg);
+    }
+
+    .recon-point {
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: rgba(201,162,39,0.04);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .recon-point:hover {
+      background: rgba(201,162,39,0.08);
+      border-color: rgba(201,162,39,0.4);
+    }
+
+    .recon-num {
+      font-family: var(--ff-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: rgba(201,162,39,0.3);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .recon-point h4 { color: var(--gold); font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .recon-point p  { font-size: 0.82rem; color: rgba(245,239,230,0.65); line-height: 1.55; }
+
+    /* Sketchfab embed */
+    .sketchfab-slot {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .embed-placeholder {
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 2rem;
+    }
+
+    .embed-icon { font-size: 2.5rem; opacity: 0.5; }
+
+    .embed-placeholder h4 {
+      color: var(--cream);
+      font-size: 1rem;
+    }
+
+    .embed-placeholder p {
+      font-size: 0.75rem;
+      color: rgba(245,239,230,0.45);
+      text-align: center;
+      max-width: 300px;
+    }
+
+    .embed-code {
+      font-size: 0.65rem;
+      color: rgba(245,239,230,0.3);
+      font-family: monospace;
+      background: rgba(0,0,0,0.3);
+      padding: 0.3rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    .colab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.5rem;
+      background: #F9AB00;
+      color: #1a1a1a;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 1rem;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .colab-btn:hover { background: #F4B400; transform: translateY(-2px); color: #000; }
+
+    @media (max-width: 700px) {
+      .recon-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===================================================
+       SECTION 8 — VISITOR NOTES
+    =================================================== */
+    #visitor {
+      background: var(--cream);
+      padding: var(--section-pad) 0;
+    }
+
+    .visitor-header { text-align: center; margin-bottom: var(--gap-lg); }
+    .visitor-header h2 { color: var(--red-dark); }
+
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: var(--gap-md);
+    }
+
+    .tab-btn {
+      font-family: var(--ff-body);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--text-mid);
+      transition: all var(--transition);
+    }
+
+    .tab-btn:hover { border-color: var(--red); color: var(--red); }
+
+    .tab-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+
+    .tab-panels { position: relative; }
+
+    .tab-panel {
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      animation: fadePanel 0.3s ease;
+    }
+
+    .tab-panel.active { display: block; }
+
+    @keyframes fadePanel {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-panel h3 { color: var(--red-dark); margin-bottom: 1rem; }
+    .tab-panel .hook {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(139,46,46,0.05);
+      border-left: 3px solid var(--red);
+      padding: 1rem 1.2rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 1.2rem;
+    }
+
+    .hook-emoji { font-size: 1.5rem; flex-shrink: 0; }
+    .hook p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.55; }
+    .hook strong { color: var(--red-dark); }
+
+    .tab-panel ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .tab-panel ul li { font-size: 0.88rem; color: var(--text-mid); padding-left: 1.2rem; position: relative; }
+    .tab-panel ul li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 0.5rem; top: 0.3rem; }
+
+    /* ===================================================
+       SECTION 9 — EMBEDS
+    =================================================== */
+    #embeds {
+      background: var(--teal);
+      padding: var(--section-pad) 0;
+    }
+
+    .embeds-header { text-align: center; margin-bottom: var(--gap-lg); }
+    .embeds-header h2 { color: var(--cream); }
+    .embeds-header p  { color: rgba(245,239,230,0.6); max-width: 600px; margin: 1rem auto 0; font-size: 0.9rem; }
+
+    .embeds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-md);
+    }
+
+    .embed-card {
+      background: rgba(245,239,230,0.04);
+      border: 1px solid rgba(201,162,39,0.15);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .embed-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.2rem;
+      background: rgba(0,0,0,0.2);
+      border-bottom: 1px solid rgba(201,162,39,0.15);
+    }
+
+    .embed-card-header h4 {
+      color: var(--cream);
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .embed-card-header .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .embed-card .embed-body { min-height: 280px; }
+
+    .embed-card iframe {
+      width: 100%;
+      height: 280px;
+      border: 0;
+      display: block;
+    }
+
+    /* Maps card spans full width */
+    .embed-card.full-width { grid-column: 1 / -1; }
+    .embed-card.full-width iframe { height: 380px; }
+    .embed-card.full-width .embed-body { min-height: 380px; }
+
+    @media (max-width: 700px) {
+      .embeds-grid { grid-template-columns: 1fr; }
+      .embed-card.full-width { grid-column: auto; }
+    }
+
+    /* ===================================================
+       FOOTER
+    =================================================== */
+    #footer {
+      background: var(--red-dark);
+      padding: var(--gap-lg) 0 var(--gap-md);
+      color: rgba(245,239,230,0.8);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--gap-md);
+      align-items: start;
+      padding-bottom: var(--gap-md);
+      border-bottom: 1px solid rgba(245,239,230,0.12);
+      margin-bottom: var(--gap-md);
+    }
+
+    .footer-brand h3 {
+      font-size: 1.5rem;
+      color: var(--cream);
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-brand p { font-size: 0.78rem; color: rgba(245,239,230,0.5); }
+
+    .footer-axis {
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(201,162,39,0.4), transparent);
+      align-self: stretch;
+      min-height: 80px;
+    }
+
+    .footer-links { text-align: right; }
+    .footer-links h4 {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links nav { display: flex; flex-direction: column; gap: 0.3rem; }
+    .footer-links a {
+      font-size: 0.78rem;
+      color: rgba(245,239,230,0.6);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-bottom { text-align: center; }
+    .footer-sources {
+      font-size: 0.7rem;
+      color: rgba(245,239,230,0.4);
+      line-height: 1.8;
+    }
+
+    .footer-sources a { color: rgba(245,239,230,0.5); }
+    .footer-sources sup { font-size: 0.6rem; }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: rgba(245,239,230,0.3);
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 600px) {
+      .footer-inner { grid-template-columns: 1fr; text-align: left; }
+      .footer-axis { display: none; }
+      .footer-links { text-align: left; }
+    }
+
+    /* ===================================================
+       SCROLL REVEAL ANIMATION
+    =================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ===================================================
+       DANGER BANNER
+    =================================================== */
+    .danger-banner {
+      background: rgba(180,30,30,0.9);
+      border-bottom: 1px solid rgba(255,100,100,0.3);
+      padding: 0.5rem 0;
+      text-align: center;
+    }
+
+    .danger-banner p {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ffcccc;
+    }
+
+    .danger-banner span { color: #ff9999; }
+
+    /* ===================================================
+       MUGHAL ORNAMENT SVG
+    =================================================== */
+    .ornament {
+      display: block;
+      margin: 0 auto;
+      opacity: 0.4;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ⚠️ DANGER BANNER -->
+  <div class="danger-banner" role="alert" aria-label="UNESCO World Heritage in Danger">
+    <p>⚠ <span>UNESCO World Heritage in Danger</span> — Listed since 2000 · Shalimar Gardens, Lahore</p>
+  </div>
+
+  <!-- ===================================================
+       NAV
+  =================================================== -->
+  <nav id="site-nav" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="#hero" class="nav-brand"><img src="logo.png" alt="Charbagh Collective logo">Charbagh <span>Collective</span></a>
+      <button class="nav-menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#timeline">Timeline</a></li>
+        <li><a href="#terraces">Terraces</a></li>
+        <li><a href="#water">Water</a></li>
+        <li><a href="#symmetry">Symmetry</a></li>
+        <li><a href="#reconstruction">3D</a></li>
+        <li><a href="#visitor">Visit</a></li>
+        <li><a href="#embeds">Explore</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================================================
+       SECTION 1 — HERO
+  =================================================== -->
+  <section id="hero" aria-labelledby="hero-title">
+    <div class="hero-bg" role="img" aria-label="Aerial view of Shalimar Gardens' reflecting pools and fountains"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-axis" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow" aria-label="UNESCO World Heritage Site">
+        <div class="hero-dot"></div>
+        <span>UNESCO World Heritage · Baghbanpura, Lahore</span>
+        <div class="hero-dot"></div>
+      </div>
+
+      <h1 class="hero-title" id="hero-title">Shalimar<br>Gardens</h1>
+      <span class="hero-axis-word" aria-hidden="true"></span>
+      <p class="hero-subtitle">Where Water, Symmetry, and Empire Meet</p>
+
+      <div class="hero-tags" aria-label="Site attributes">
+        <span class="hero-tag">Est. 1641–1642</span>
+        <span class="hero-tag">Shah Jahan</span>
+        <span class="hero-tag">~16 Hectares</span>
+        <span class="hero-tag">Charbagh Form</span>
+        <span class="hero-tag danger">In Danger Since 2000</span>
+      </div>
+
+      <button class="hero-scroll" onclick="document.getElementById('overview').scrollIntoView({behavior:'smooth'})" aria-label="Scroll to overview">
+        <span>Explore</span>
+        <span class="scroll-arrow" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 2 — OVERVIEW
+  =================================================== -->
+  <section id="overview" aria-labelledby="overview-title">
+    <div class="container">
+      <div class="overview-grid">
+        <!-- Left block -->
+        <div class="overview-block reveal">
+          <span class="section-label">The Garden</span>
+          <h2 id="overview-title">A Paradise<br>Encoded in Stone</h2>
+          <p>
+            Built 1641–1642 under Emperor Shah Jahan as a Persian-style <em>Charbagh</em> ("four-garden") — a walled representation of paradise, arranged to mirror divine order through geometry, water, and nature.
+          </p>
+          <p>
+            Located ~5 km northeast of Lahore's Walled City, the gardens span approximately 16 hectares, enclosed by a crenellated red sandstone wall with ornate corner <em>chhatris</em>.
+          </p>
+          <p>
+            Inspired by the older Shalimar Garden in Kashmir (built by Shah Jahan's father Jahangir), Lahore's flat terrain meant every cascade and fountain had to be <strong>engineered</strong> — including a 100+ mile canal, the Shah Nahar (Hansli Canal), drawn from the Ravi River.
+          </p>
+        </div>
+
+        <div class="overview-divider" aria-hidden="true"></div>
+
+        <!-- Right block -->
+        <div class="overview-block reveal">
+          <span class="section-label">At a Glance</span>
+          <div class="stat-row" role="list" aria-label="Key facts">
+            <div class="stat-card" role="listitem">
+              <span class="stat-num">1641</span>
+              <span class="stat-label">Year Built</span>
+            </div>
+            <div class="stat-card" role="listitem">
+              <span class="stat-num">16</span>
+              <span class="stat-label">Hectares</span>
+            </div>
+            <div class="stat-card" role="listitem">
+              <span class="stat-num">410+</span>
+              <span class="stat-label">Fountains</span>
+            </div>
+            <div class="stat-card" role="listitem">
+              <span class="stat-num">3</span>
+              <span class="stat-label">Terraces</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem;">
+            <span class="section-label">Engineering Feat</span>
+            <p style="color: rgba(245,239,230,0.75); font-size:0.9rem; margin-top:0.5rem;">
+              A 100+ mile (<em>Shah Nahar</em>) gravity-fed canal from the Ravi River powers 410–414 fountains across three terraces — entirely without mechanical pumps. A secondary Persian wheel well supplemented supply during dry seasons.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 3 — TIMELINE
+  =================================================== -->
+  <section id="timeline" aria-labelledby="timeline-title">
+    <div class="container">
+      <div class="timeline-header reveal">
+        <span class="section-label">History</span>
+        <h2 id="timeline-title">Four Centuries of History</h2>
+        <p style="color: var(--text-light); max-width: 540px; margin: 0.8rem auto 0; font-size:0.9rem;">
+          From imperial commission to UNESCO endangerment — scroll through the key events.
+        </p>
+      </div>
+
+      <div class="timeline-track" id="timelineTrack" role="list" aria-label="Timeline of Shalimar Gardens">
+        <div class="tl-item" role="listitem">
+          <div class="tl-year">1641</div>
+          <div class="tl-event">
+            Construction begins, led by <strong>Khalilullah Khan</strong> with master engineer <strong>Ali Mardan Khan</strong>. The Shah Nahar canal is dug to supply the water system.
+          </div>
+        </div>
+        <div class="tl-item" role="listitem">
+          <div class="tl-year">1642</div>
+          <div class="tl-event">
+            Completed in one year. Shah Jahan visits <strong>31 October 1642</strong> with Turkish and Persian guests, inaugurating the gardens in royal ceremony.
+          </div>
+        </div>
+        <div class="tl-item" role="listitem">
+          <div class="tl-year">1981</div>
+          <div class="tl-event">
+            Inscribed as a <strong>UNESCO World Heritage Site</strong>, jointly with Lahore Fort, in recognition of its outstanding universal value as a Mughal garden of the highest order.
+          </div>
+        </div>
+        <div class="tl-item danger" role="listitem">
+          <div class="tl-year">1999</div>
+          <div class="tl-event">
+            Grand Trunk Road widening <strong>destroys 2 of 3 original hydraulic works</strong> — an irreversible loss to the garden's engineering heritage. Two cascades are permanently gone.
+          </div>
+        </div>
+        <div class="tl-item danger" role="listitem">
+          <div class="tl-year">2000</div>
+          <div class="tl-event">
+            UNESCO places the site on the <strong>"World Heritage in Danger"</strong> list, citing threats from urban encroachment, road construction, and deteriorating water infrastructure.
+          </div>
+        </div>
+        <div class="tl-item present" role="listitem">
+          <div class="tl-year">2010s–<br>Now</div>
+          <div class="tl-event">
+            WCLA-led restoration: symmetry restoration, encroachment removal, and digital archiving underway. The <strong>Charbagh Collective</strong> contributes photogrammetric and NeRF-based 3D documentation.
+          </div>
+        </div>
+      </div>
+
+      <p class="tl-scroll-hint" aria-label="Scroll hint">← Drag or scroll to explore →</p>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 4 — THREE TERRACES
+  =================================================== -->
+  <section id="terraces" aria-labelledby="terraces-title">
+    <div class="axis-line" aria-hidden="true"></div>
+    <div class="container">
+      <div class="terraces-header reveal">
+        <span class="section-label" style="color: var(--gold-light);">Architecture</span>
+        <h2 id="terraces-title">The Three Terraces</h2>
+        <p>
+          Each <em>bagh</em> descends 4–5 metres from the one above, creating a gravity cascade from south (highest) to north (lowest). The <em>khayaban</em> — fountain-lined walkways — quarter each terrace into the classic Charbagh form.
+        </p>
+      </div>
+
+      <div class="terraces-grid">
+        <!-- Upper -->
+        <article class="terrace-card reveal" aria-label="Upper Terrace">
+          <span class="terrace-elevation">↑ Highest · South</span>
+          <svg class="terrace-icon" viewBox="0 0 60 60" aria-hidden="true">
+            <rect x="10" y="10" width="40" height="40" fill="none" stroke="#C9A227" stroke-width="1.5" opacity="0.6"/>
+            <line x1="30" y1="10" x2="30" y2="50" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+            <line x1="10" y1="30" x2="50" y2="30" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+            <circle cx="30" cy="30" r="4" fill="#C9A227" opacity="0.8"/>
+            <circle cx="20" cy="20" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="40" cy="20" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="20" cy="40" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="40" cy="40" r="2" fill="#C9A227" opacity="0.4"/>
+          </svg>
+          <h3>Bagh-e-Farah Baksh</h3>
+          <span class="terrace-name-en">"Bestower of Pleasure"</span>
+          <p>The Emperor's private garden and harem enclosure — the most elevated and exclusive terrace. Square in plan, quartered by <em>khayaban</em> with 105 fountains.</p>
+          <span class="terrace-shape">Square · 105 Fountains</span>
+        </article>
+
+        <!-- Middle -->
+        <article class="terrace-card reveal" aria-label="Middle Terrace">
+          <span class="terrace-elevation">↕ Middle</span>
+          <svg class="terrace-icon" viewBox="0 0 60 60" aria-hidden="true">
+            <rect x="5" y="18" width="50" height="24" fill="none" stroke="#C9A227" stroke-width="1.5" opacity="0.6"/>
+            <line x1="30" y1="18" x2="30" y2="42" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+            <line x1="5" y1="30" x2="55" y2="30" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+            <circle cx="30" cy="30" r="5" fill="none" stroke="#C9A227" stroke-width="1.5" opacity="0.7"/>
+            <circle cx="30" cy="30" r="2" fill="#C9A227" opacity="0.8"/>
+          </svg>
+          <h3>Bagh-e-Faiz Baksh</h3>
+          <span class="terrace-name-en">"Bestower of Goodness"</span>
+          <p>The Emperor's own terrace — the most elaborate waterworks in the garden. This narrow rectangular terrace holds 152 fountains, the Great Marble Cascade, and the Sawan Bhadoon.</p>
+          <span class="terrace-shape">Rectangle · 152 Fountains</span>
+        </article>
+
+        <!-- Lower -->
+        <article class="terrace-card reveal" aria-label="Lower Terrace">
+          <span class="terrace-elevation">↓ Lowest · North</span>
+          <svg class="terrace-icon" viewBox="0 0 60 60" aria-hidden="true">
+            <rect x="10" y="10" width="40" height="40" fill="none" stroke="#C9A227" stroke-width="1.5" opacity="0.6"/>
+            <line x1="30" y1="10" x2="30" y2="50" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+            <line x1="10" y1="30" x2="50" y2="30" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+            <circle cx="30" cy="30" r="6" fill="none" stroke="#C9A227" stroke-width="1" opacity="0.5"/>
+            <circle cx="20" cy="20" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="40" cy="20" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="20" cy="40" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="40" cy="40" r="2" fill="#C9A227" opacity="0.4"/>
+            <circle cx="30" cy="20" r="1.5" fill="#C9A227" opacity="0.3"/>
+            <circle cx="30" cy="40" r="1.5" fill="#C9A227" opacity="0.3"/>
+          </svg>
+          <h3>Hayat Baksh</h3>
+          <span class="terrace-name-en">"Bestower of Life"</span>
+          <p>The public entrance terrace — accessible to noblemen and visitors. Square in plan, with 153 fountains. Water arrives here last, having cooled the air along its descent from the south.</p>
+          <span class="terrace-shape">Square · 153 Fountains</span>
+        </article>
+      </div>
+
+      <div style="text-align:center; margin-top: 3rem; position:relative; z-index:1;">
+        <svg width="300" height="40" viewBox="0 0 300 40" aria-hidden="true" class="ornament">
+          <line x1="0" y1="20" x2="120" y2="20" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+          <polygon points="150,5 160,20 150,35 140,20" fill="none" stroke="#C9A227" stroke-width="1" opacity="0.6"/>
+          <line x1="180" y1="20" x2="300" y2="20" stroke="#C9A227" stroke-width="1" opacity="0.4"/>
+          <circle cx="150" cy="20" r="3" fill="#C9A227" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 5 — WATER SYSTEM
+  =================================================== -->
+  <section id="water" aria-labelledby="water-title">
+    <div class="container">
+      <div class="water-intro reveal">
+        <span class="section-label" style="color:rgba(100,200,255,0.8)">Engineering</span>
+        <h2 id="water-title">The Water System</h2>
+        <p>
+          410–414 fountains, five major cascades, zero pumps. The entire system is gravity-fed — water descends from the Shah Nahar canal through the highest terrace, over <em>chadar</em> cascade chutes, cooling air that once exceeded 49°C in Lahore summers.
+        </p>
+      </div>
+
+      <div class="water-layout">
+        <!-- Flow diagram -->
+        <div class="water-diagram reveal">
+          <h4 style="color:var(--cream); margin-bottom:1.5rem; font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase;">Gravity Flow System</h4>
+          <div class="flow-diagram">
+
+            <div class="flow-node">
+              <div class="flow-node-title">Shah Nahar Canal</div>
+              <div class="flow-node-sub">100+ mile canal · Ravi River source</div>
+            </div>
+            <div class="flow-arrow">
+              <div class="water-drop"></div>
+              <div class="water-drop"></div>
+              <div class="water-drop"></div>
+            </div>
+
+            <div class="flow-node" style="background:rgba(139,46,46,0.15); border-color:rgba(139,46,46,0.4);">
+              <div class="flow-node-title" style="color:#e88;">Bagh-e-Farah Baksh</div>
+              <div class="flow-node-sub">Upper Terrace · 105 fountains · <em>haūz</em> pools</div>
+            </div>
+            <span class="flow-cascade-label">↳ <em>chadar</em> cascade</span>
+            <div class="flow-arrow">
+              <div class="water-drop"></div>
+              <div class="water-drop"></div>
+              <div class="water-drop"></div>
+            </div>
+
+            <div class="flow-node" style="background:rgba(201,162,39,0.12); border-color:rgba(201,162,39,0.5);">
+              <div class="flow-node-title">Bagh-e-Faiz Baksh</div>
+              <div class="flow-node-sub">Middle Terrace · 152 fountains · Great Marble Cascade</div>
+            </div>
+            <span class="flow-cascade-label">↳ Sawan Bhadoon cascade</span>
+            <div class="flow-arrow">
+              <div class="water-drop"></div>
+              <div class="water-drop"></div>
+              <div class="water-drop"></div>
+            </div>
+
+            <div class="flow-node" style="background:rgba(28,100,60,0.15); border-color:rgba(60,180,100,0.3);">
+              <div class="flow-node-title" style="color:rgba(100,220,150,0.9);">Hayat Baksh</div>
+              <div class="flow-node-sub">Lower Terrace · 153 fountains · public <em>bagh</em></div>
+            </div>
+
+            <div style="height:1rem;"></div>
+            <div style="font-size:0.7rem; color:rgba(245,239,230,0.35); text-align:center; border-top:1px solid rgba(245,239,230,0.08); padding-top:0.8rem; width:100%; max-width:340px;">
+              ⊕ Persian wheel well — supplementary supply
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart + facts -->
+        <div class="reveal">
+          <div class="water-chart">
+            <h3 class="chart-title">Fountain Distribution</h3>
+            <p class="chart-sub">410–414 total fountains across three terraces</p>
+
+            <div class="chart-bars" id="chartBars">
+              <div class="chart-bar-row">
+                <div class="chart-bar-label">
+                  <span>Upper — Bagh-e-Farah Baksh</span>
+                  <strong>105</strong>
+                </div>
+                <div class="chart-bar-track">
+                  <div class="chart-bar-fill" data-pct="68" style="background:linear-gradient(to right,rgba(180,80,80,0.6),rgba(180,80,80,0.95));"></div>
+                </div>
+              </div>
+
+              <div class="chart-bar-row">
+                <div class="chart-bar-label">
+                  <span>Middle — Bagh-e-Faiz Baksh</span>
+                  <strong>152</strong>
+                </div>
+                <div class="chart-bar-track">
+                  <div class="chart-bar-fill gold" data-pct="99"></div>
+                </div>
+              </div>
+
+              <div class="chart-bar-row">
+                <div class="chart-bar-label">
+                  <span>Lower — Hayat Baksh</span>
+                  <strong>153</strong>
+                </div>
+                <div class="chart-bar-track">
+                  <div class="chart-bar-fill" data-pct="100"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-total">
+              Total: <strong style="color:rgba(100,200,255,0.85);">~410 fountains</strong> · 5 major cascades including the Great Marble Cascade & Sawan Bhadoon
+            </div>
+          </div>
+
+          <div class="water-facts" aria-label="Water system key facts">
+            <div class="water-fact">
+              <div class="water-fact-num">410+</div>
+              <p>Marble fountains feeding <em>haūz</em> pools</p>
+            </div>
+            <div class="water-fact">
+              <div class="water-fact-num">5</div>
+              <p>Major cascades incl. Great Marble Cascade</p>
+            </div>
+            <div class="water-fact">
+              <div class="water-fact-num">0</div>
+              <p>Mechanical pumps — entirely gravity-fed</p>
+            </div>
+            <div class="water-fact">
+              <div class="water-fact-num">49°C</div>
+              <p>Peak Lahore summer heat the system was designed to counter</p>
+            </div>
+          </div>
+
+          <!-- Cascade image -->
+          <div class="cascade-media-slot" style="margin-top:1.5rem; min-height:200px;" aria-label="Water cascade at Shalimar Gardens">
+            <img src="cascade.jpg" alt="Water cascade at Shalimar Gardens" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 6 — SYMMETRY AS MEANING
+  =================================================== -->
+  <section id="symmetry" aria-labelledby="symmetry-title">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:var(--gap-lg);" class="reveal">
+        <span class="section-label">Design Philosophy</span>
+        <h2 id="symmetry-title">Symmetry as Meaning</h2>
+        <span class="gold-line"></span>
+      </div>
+
+      <div class="symmetry-layout">
+        <div class="symmetry-col reveal">
+          <div class="sym-fact">
+            <h4>Central North–South Axis</h4>
+            <p>The spine of the entire garden — a water channel running from the highest to lowest terrace. Every element mirrors across this line, encoding divine order in the landscape itself.</p>
+          </div>
+          <div class="sym-fact">
+            <h4>Mirrored Quadrants</h4>
+            <p>Each <em>bagh</em> is quartered by <em>khayaban</em> (fountain-lined walkways), creating four equal sub-gardens that reflect the Quranic description of paradise's four rivers.</p>
+          </div>
+          <div class="sym-fact">
+            <h4>Reflected Pools — <em>Haūz</em></h4>
+            <p>Still marble pools double every cypress and minaret into their reflection, creating an infinite vertical axis connecting sky to earth, heaven to the garden visitor below.</p>
+          </div>
+        </div>
+
+        <!-- Central axis visual -->
+        <div class="symmetry-center" aria-hidden="true">
+          <div class="axis-visual">
+            <div class="axis-dot"></div>
+            <div class="axis-dot"></div>
+            <div class="axis-dot"></div>
+          </div>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <polygon points="12,2 14,10 22,12 14,14 12,22 10,14 2,12 10,10" fill="#C9A227" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <div class="symmetry-col right reveal">
+          <div class="sym-fact">
+            <h4>Paired Cypress & Poplar Trees</h4>
+            <p>Identical trees planted in mirror pairs along the <em>khayaban</em> reinforce the axial reading — the garden is meant to be read as one half of a whole, completed by its reflection.</p>
+          </div>
+          <div class="sym-fact">
+            <h4><em>Bagh</em> as Bridge</h4>
+            <p>The Mughal concept of <em>bagh</em> encodes harmonious coexistence between humans and nature — a bridge between the earthly and divine, made visible through geometry and water.</p>
+          </div>
+          <div class="sym-fact">
+            <h4>Crenellated Wall & <em>Chhatris</em></h4>
+            <p>The red sandstone boundary wall with corner pavilions frames the garden as a bounded paradise — a literal "walled garden" (<em>pairidaeza</em>), the Persian root of the word "paradise".</p>
+          </div>
+        </div>
+
+        <div class="symmetry-quote reveal">
+          <blockquote>
+            "The garden is not decoration — it is cosmology written in water and stone, where bilateral symmetry makes visible the Mughal idea of divine order."
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 7 — 3D RECONSTRUCTION
+  =================================================== -->
+  <section id="reconstruction" aria-labelledby="recon-title">
+    <div class="container">
+      <div class="recon-header reveal">
+        <span class="section-label" style="color:rgba(100,200,255,0.7)">Digital Preservation</span>
+        <h2 id="recon-title">Why This Site Fits<br>Interactive 3D Reconstruction</h2>
+        <p>
+          Shalimar Gardens is an unusually strong candidate for photogrammetric and NeRF-based digital preservation — by design and by necessity.
+        </p>
+      </div>
+
+      <div class="recon-grid">
+        <div class="recon-point reveal">
+          <div class="recon-num">01</div>
+          <div>
+            <h4>Symmetry as Validation</h4>
+            <p>Strict axial symmetry makes photogrammetry and NeRF reconstruction easy to validate — one half should mirror the other. Deviation flags errors or degradation.</p>
+          </div>
+        </div>
+        <div class="recon-point reveal">
+          <div class="recon-num">02</div>
+          <div>
+            <h4>Terraced Depth Cues</h4>
+            <p>The 4–5m elevation steps between terraces provide strong depth cues for monocular depth estimation and multi-view stereo pipelines.</p>
+          </div>
+        </div>
+        <div class="recon-point reveal">
+          <div class="recon-num">03</div>
+          <div>
+            <h4>Genuine Digital Preservation</h4>
+            <p>Two of three original hydraulic systems <strong>no longer physically exist</strong>, destroyed in 1999. 3D reconstruction is not just visualization — it is the only form of preservation left for these structures.</p>
+          </div>
+        </div>
+        <div class="recon-point reveal">
+          <div class="recon-num">04</div>
+          <div>
+            <h4>Dynamic Water as Test Case</h4>
+            <p>Water motion — cascades, fountains, reflections — is an ideal test for combining static 3D reconstruction with dynamic element simulation and novel view synthesis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sketchfab 3D model embed -->
+      <div class="sketchfab-slot reveal" aria-label="3D model viewer">
+        <iframe
+          title="Shalimar Gardens 3D Model"
+          src="https://sketchfab.com/models/d81410fe83f54c45b0caffe9490cf5d3/embed"
+          allow="autoplay; fullscreen; xr-spatial-tracking"
+          allowfullscreen
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+          style="width:100%; height:420px; border:0; display:block;">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 8 — VISITOR NOTES
+  =================================================== -->
+  <section id="visitor" aria-labelledby="visitor-title">
+    <div class="container">
+      <div class="visitor-header reveal">
+        <span class="section-label">Plan Your Visit</span>
+        <h2 id="visitor-title">Who's Coming?</h2>
+        <p style="color:var(--text-light); max-width:500px; margin:0.8rem auto 0; font-size:0.9rem;">
+          Select your group type for tailored guidance on what to look for, ask about, and when to visit.
+        </p>
+      </div>
+
+      <div class="tab-bar" role="tablist" aria-label="Visitor type selection">
+        <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-families"  id="btn-families"  onclick="switchTab('families')">Families & Schools</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-arch"      id="btn-arch"      onclick="switchTab('arch')">Architecture Students</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-visitors"  id="btn-visitors"  onclick="switchTab('visitors')">Lahore Visitors</button>
+      </div>
+
+      <div class="tab-panels">
+        <!-- Tab: Families -->
+        <div class="tab-panel active" id="tab-families" role="tabpanel" aria-labelledby="btn-families">
+          <h3>For Families &amp; School Groups</h3>
+          <div class="hook">
+            <span class="hook-emoji">💧</span>
+            <p><strong>The big question:</strong> Water flows downhill without pumps — but how does it reach all 410 fountains? The answer lies in the 100-mile canal, gravity, and centuries of Mughal engineering genius.</p>
+          </div>
+          <ul>
+            <li>Ask your guide to show you the <em>chadar</em> — the carved marble cascade chute that breaks the water into a thin, shimmering sheet.</li>
+            <li>Look for the geometric patterns in the <em>khayaban</em> (fountain walkways) — they're the same shape as Islamic tilework and carpet patterns.</li>
+            <li>Count how many trees you see on the left, then look right — they should be identical (Mughal bilateral symmetry in action).</li>
+            <li>Best for school groups: the Lower Terrace (Hayat Baksh) is the most accessible and has the most open space.</li>
+            <li>Interactive question: if water enters at the top, where does it go at the bottom? (It once fed Lahore's city gardens via the same canal system.)</li>
+          </ul>
+        </div>
+
+        <!-- Tab: Architecture Students -->
+        <div class="tab-panel" id="tab-arch" role="tabpanel" aria-labelledby="btn-arch" hidden>
+          <h3>For Architecture Students</h3>
+          <div class="hook">
+            <span class="hook-emoji">📐</span>
+            <p><strong>Design hook:</strong> How does a strict <em>Charbagh</em> geometry — four gardens quartered by water channels — translate into a terrace system on flat ground without natural elevation changes?</p>
+          </div>
+          <ul>
+            <li>Study the transition wall between each terrace — how does the architect handle the 4–5m grade change while maintaining axial symmetry above and below?</li>
+            <li>Note the middle terrace (Bagh-e-Faiz Baksh) is a <strong>narrow rectangle</strong>, not a square — why? And how does this affect the fountain layout?</li>
+            <li>The crenellated red sandstone boundary wall with <em>chhatri</em> corner pavilions is itself a Mughal spatial vocabulary element — locate where it departs from pure symmetry.</li>
+            <li>Compare the Upper Terrace's private, enclosed feel vs. the Lower Terrace's more open public character — how is this achieved through the same geometric language?</li>
+            <li>Research reference: the Lahore Biennale Foundation's heritage documentation for measured drawings and photogrammetric data.</li>
+          </ul>
+        </div>
+
+        <!-- Tab: Lahore Visitors -->
+        <div class="tab-panel" id="tab-visitors" role="tabpanel" aria-labelledby="btn-visitors" hidden>
+          <h3>For Lahore Visitors</h3>
+          <div class="hook">
+            <span class="hook-emoji">🕌</span>
+            <p><strong>Practical guide:</strong> Shalimar is open <strong>sunrise to sunset</strong>, with a modest entry fee. The fountains run best <strong>early morning</strong> — after midday pressure often drops.</p>
+          </div>
+          <ul>
+            <li><strong>Best seasons:</strong> Spring (Feb–April) when the gardens are green, or Autumn (Oct–Nov) when the weather is cool — avoid peak summer heat above 40°C.</li>
+            <li><strong>Location:</strong> Baghbanpura, ~5 km northeast of the Walled City — accessible by rickshaw, ride-share, or the GT Road. Ask for <em>"Shalimar Bagh"</em>.</li>
+            <li><strong>What to look for:</strong> The Great Marble Cascade and Sawan Bhadoon pavilion in the Middle Terrace are the most photographed spots.</li>
+            <li><strong>Tip:</strong> Enter from the northern gate (Lower Terrace / Hayat Baksh) and ascend — you'll experience the garden as Shah Jahan intended, moving from public to private, open to intimate.</li>
+            <li><strong>Photography:</strong> The central axis and reflecting pools are best shot from the terrace walls, about 45 minutes after sunrise or before sunset.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 9 — EMBEDS / EXPLORE
+  =================================================== -->
+  <section id="embeds" aria-labelledby="embeds-title">
+    <div class="container">
+      <div class="embeds-header reveal">
+        <span class="section-label" style="color:rgba(100,200,255,0.7)">Explore</span>
+        <h2 id="embeds-title">Explore the Garden</h2>
+        <p>Maps, aerial footage, and the team's digital tools — all in one place.</p>
+      </div>
+
+      <div class="embeds-grid">
+
+        <!-- Google Maps — full width -->
+        <div class="embed-card full-width reveal">
+          <div class="embed-card-header">
+            <div class="dot"></div>
+            <h4>📍 Location — Shalimar Gardens, Baghbanpura, Lahore</h4>
+          </div>
+          <div class="embed-body">
+            <iframe
+              src="https://www.google.com/maps?q=Shalimar+Gardens,+Lahore&output=embed"
+              title="Map of Shalimar Gardens, Lahore"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              aria-label="Google Maps showing Shalimar Gardens location in Baghbanpura, Lahore">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- YouTube aerial footage embed -->
+        <div class="embed-card reveal">
+          <div class="embed-card-header">
+            <div class="dot" style="background:#FF0000;"></div>
+            <h4>🎬 Aerial Footage — Shalimar Gardens</h4>
+          </div>
+          <div class="embed-body">
+            <iframe
+              src="https://www.youtube.com/embed/4bGJbGM_XCE"
+              title="Shalimar Gardens Lahore aerial footage"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+              style="width:100%; height:280px; border:0; display:block;">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Sketchfab 3D model embed -->
+        <div class="embed-card reveal">
+          <div class="embed-card-header">
+            <div class="dot" style="background:#1CAAD9;"></div>
+            <h4>🏛️ 3D Model Viewer — Mughal Architecture</h4>
+          </div>
+          <div class="embed-body">
+            <iframe
+              title="Mughal Architecture 3D Model"
+              src="https://sketchfab.com/models/d81410fe83f54c45b0caffe9490cf5d3/embed"
+              allow="autoplay; fullscreen; xr-spatial-tracking"
+              allowfullscreen
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true"
+              loading="lazy"
+              style="width:100%; height:280px; border:0; display:block;">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       FOOTER
+  =================================================== -->
+  <footer id="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <h3>Charbagh Collective</h3>
+          <p>PMW × TechRealm Group Sprint</p>
+          <p style="margin-top:0.8rem; font-size:0.78rem; color:rgba(245,239,230,0.45);">
+            A student heritage preservation initiative under<br>
+            <strong style="color:rgba(245,239,230,0.6);">PreserveMy.World × TechRealm</strong>
+          </p>
+        </div>
+
+        <div class="footer-axis" aria-hidden="true"></div>
+
+        <nav class="footer-links" aria-label="Page sections">
+          <h4>Navigate</h4>
+          <nav>
+            <a href="#overview">Overview</a>
+            <a href="#timeline">Timeline</a>
+            <a href="#terraces">Three Terraces</a>
+            <a href="#water">Water System</a>
+            <a href="#symmetry">Symmetry</a>
+            <a href="#reconstruction">3D Reconstruction</a>
+            <a href="#visitor">Visitor Notes</a>
+            <a href="#embeds">Explore</a>
+          </nav>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-sources" role="contentinfo" aria-label="Sources and references">
+          <strong style="color:rgba(245,239,230,0.6); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;">Sources</strong><br>
+          <sup>1</sup> <a href="https://whc.unesco.org/en/list/171" target="_blank" rel="noopener">UNESCO World Heritage Centre</a> ·
+          <sup>2</sup> <a href="https://en.wikipedia.org/wiki/Shalimar_Gardens,_Lahore" target="_blank" rel="noopener">Wikipedia — Shalimar Gardens, Lahore</a> ·
+          <sup>3</sup> <a href="https://lahorebiennale.org" target="_blank" rel="noopener">Lahore Biennale Foundation</a> ·
+          <sup>4</sup> <a href="https://www.heritageofpakistan.org" target="_blank" rel="noopener">Heritage of Pakistan</a> ·
+          <sup>5</sup> <a href="https://www.trulypakistan.com/shalimar-gardens" target="_blank" rel="noopener">Truly Pakistan</a>
+        </div>
+
+        <p class="footer-copy">
+          © 2024 Charbagh Collective — PMW × TechRealm Group Sprint · For educational and preservation purposes
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================
+       JAVASCRIPT
+  =================================================== -->
+  <script>
+    // ── NAV SCROLL BEHAVIOUR ──────────────────────────────
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── MOBILE MENU ──────────────────────────────────────
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+
+    menuBtn.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open);
+    });
+
+    // Close menu on link click
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ── SCROLL REVEAL ─────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // ── CHART BAR ANIMATION ──────────────────────────────
+    const chartObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.chart-bar-fill').forEach(bar => {
+            const pct = bar.getAttribute('data-pct');
+            bar.style.width = pct + '%';
+          });
+          chartObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const chartBars = document.getElementById('chartBars');
+    if (chartBars) chartObserver.observe(chartBars);
+
+    // ── TIMELINE DRAG SCROLL ─────────────────────────────
+    const track = document.getElementById('timelineTrack');
+    if (track) {
+      let isDown = false, startX, scrollLeft;
+
+      track.addEventListener('mousedown', e => {
+        isDown = true;
+        track.classList.add('grabbing');
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDown = false;
+        track.classList.remove('grabbing');
+      });
+
+      track.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        track.scrollLeft = scrollLeft - (x - startX);
+      });
+    }
+
+    // ── TAB SWITCHING ─────────────────────────────────────
+    function switchTab(id) {
+      // Hide all panels
+      document.querySelectorAll('.tab-panel').forEach(p => {
+        p.classList.remove('active');
+        p.hidden = true;
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      // Show selected
+      const panel = document.getElementById('tab-' + id);
+      const btn   = document.getElementById('btn-' + id);
+      if (panel) { panel.classList.add('active'); panel.hidden = false; }
+      if (btn)   { btn.classList.add('active');   btn.setAttribute('aria-selected', 'true'); }
+    }
+
+    // Keyboard nav for tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('keydown', e => {
+        const tabs = [...document.querySelectorAll('.tab-btn')];
+        const idx  = tabs.indexOf(btn);
+        if (e.key === 'ArrowRight') { e.preventDefault(); tabs[(idx + 1) % tabs.length].focus(); tabs[(idx + 1) % tabs.length].click(); }
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); tabs[(idx - 1 + tabs.length) % tabs.length].focus(); tabs[(idx - 1 + tabs.length) % tabs.length].click(); }
+      });
+    });
+
+  </script>
+</body>
+</html>
