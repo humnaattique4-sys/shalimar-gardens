@@ -8,7 +8,7 @@
   <meta property="og:title" content="Shalimar Gardens, Lahore — Charbagh Collective" />
   <meta property="og:description" content="Where Water, Symmetry, and Empire Meet. An interactive heritage showcase of the 1641 Mughal garden." />
   <meta name="theme-color" content="#8B2E2E" />
-  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/humnaattique4-sys/shalimar-gardens/main/logo.png" />
 
   <!-- Google Fonts: Cormorant Garamond (display) + Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1373,6 +1373,107 @@
       opacity: 0.4;
     }
 
+  
+    /* ===================================================================
+       PLY POINT-CLOUD VIEWER  (Three.js, team-generated reconstruction)
+       =================================================================== */
+    .ply-viewer-wrap {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+    }
+    #plyViewer {
+      position: relative;
+      width: 100%;
+      height: 440px;
+    }
+    #plyCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      outline: none;
+    }
+    #plySpinner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.85rem;
+      color: rgba(245,239,230,0.6);
+      font-family: var(--ff-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: rgba(13,26,32,0.92);
+      z-index: 2;
+      transition: opacity 0.4s ease;
+    }
+    #plySpinner.hidden { opacity: 0; pointer-events: none; }
+    .ply-spin-ring {
+      width: 30px;
+      height: 30px;
+      border: 2.5px solid rgba(201,162,39,0.22);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: plySpin 0.7s linear infinite;
+    }
+    @keyframes plySpin { to { transform: rotate(360deg); } }
+    #plyControls {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(13,26,32,0.76);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 0.38rem 0.9rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(201,162,39,0.22);
+    }
+    #plyControls label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,239,230,0.58);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    #pointSizeSlider {
+      width: 78px;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+    .ply-meta {
+      padding: 0.55rem 1.3rem;
+      background: rgba(0,0,0,0.2);
+      border-top: 1px solid rgba(201,162,39,0.1);
+      font-size: 0.64rem;
+      color: rgba(245,239,230,0.36);
+      letter-spacing: 0.07em;
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .ply-meta strong { color: rgba(201,162,39,0.6); font-weight: 600; }
+    .ply-hint {
+      text-align: center;
+      padding: 0.42rem 1rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,239,230,0.26);
+      border-top: 1px solid rgba(245,239,230,0.05);
+    }
   </style>
 </head>
 <body>
@@ -1387,7 +1488,7 @@
   =================================================== -->
   <nav id="site-nav" aria-label="Main navigation">
     <div class="container nav-inner">
-      <a href="#hero" class="nav-brand"><img src="logo.png" alt="Charbagh Collective logo">Charbagh <span>Collective</span></a>
+      <a href="#hero" class="nav-brand"><img src="https://raw.githubusercontent.com/humnaattique4-sys/shalimar-gardens/main/logo.png" alt="Charbagh Collective logo">Charbagh <span>Collective</span></a>
       <button class="nav-menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">Menu</button>
       <ul class="nav-links" id="navLinks" role="list">
         <li><a href="#overview">Overview</a></li>
@@ -1758,7 +1859,7 @@
 
           <!-- Cascade image -->
           <div class="cascade-media-slot" style="margin-top:1.5rem; min-height:200px;" aria-label="Water cascade at Shalimar Gardens">
-            <img src="cascade.jpg" alt="Water cascade at Shalimar Gardens" loading="lazy" />
+            <img src="https://raw.githubusercontent.com/humnaattique4-sys/shalimar-gardens/main/cascade.jpg" alt="Water cascade at Shalimar Gardens" loading="lazy" />
           </div>
         </div>
       </div>
@@ -1834,10 +1935,15 @@
   <section id="reconstruction" aria-labelledby="recon-title">
     <div class="container">
       <div class="recon-header reveal">
-        <span class="section-label" style="color:rgba(100,200,255,0.7)">Digital Preservation</span>
-        <h2 id="recon-title">Why This Site Fits<br>Interactive 3D Reconstruction</h2>
+        <span class="section-label" style="color:rgba(100,200,255,0.7)">Photogrammetry &middot; Team-Generated</span>
+        <h2 id="recon-title">Our Team&#8217;s 3D Point Cloud<br>Reconstruction</h2>
         <p>
-          Shalimar Gardens is an unusually strong candidate for photogrammetric and NeRF-based digital preservation — by design and by necessity.
+          This interactive viewer renders our team&#8217;s own photogrammetric point cloud of Shalimar
+          Gardens &mdash; generated end-to-end via our open-source pipeline
+          (<code style="font-size:0.83em;color:rgba(201,162,39,0.85);">download_images_v2.py</code>
+          &rarr; <code style="font-size:0.83em;color:rgba(201,162,39,0.85);">run_reconstruction_v2.py</code>).
+          Structure-from-motion on public imagery produced 842 colour-attributed points.
+          Drag to orbit, scroll to zoom, use the slider to adjust point size.
         </p>
       </div>
 
@@ -1872,17 +1978,28 @@
         </div>
       </div>
 
-      <!-- Sketchfab 3D model embed -->
-      <div class="sketchfab-slot reveal" aria-label="3D model viewer">
-        <iframe
-          title="Shalimar Gardens 3D Model"
-          src="https://sketchfab.com/models/d81410fe83f54c45b0caffe9490cf5d3/embed"
-          allow="autoplay; fullscreen; xr-spatial-tracking"
-          allowfullscreen
-          mozallowfullscreen="true"
-          webkitallowfullscreen="true"
-          style="width:100%; height:420px; border:0; display:block;">
-        </iframe>
+      <!-- Three.js PLY viewer — our own photogrammetric point cloud -->
+      <div class="ply-viewer-wrap reveal" aria-label="Interactive 3D point-cloud viewer">
+        <div id="plyViewer">
+          <canvas id="plyCanvas" aria-label="3D point cloud of Shalimar Gardens"></canvas>
+          <div id="plySpinner" aria-live="polite" aria-label="Loading point cloud">
+            <div class="ply-spin-ring"></div>
+            <span>Loading point cloud&hellip;</span>
+          </div>
+          <div id="plyControls">
+            <label for="pointSizeSlider">Point size
+              <input type="range" id="pointSizeSlider" min="0.5" max="20" step="0.5" value="8"
+                     aria-label="Adjust point size">
+            </label>
+          </div>
+        </div>
+        <div class="ply-meta">
+          <span><strong>842</strong> vertices</span>
+          <span><strong>File:</strong> shalimar_gardens_reconstruction_v2.ply</span>
+          <span><strong>Pipeline:</strong> download_images_v2 &rarr; run_reconstruction_v2</span>
+          <span><strong>Format:</strong> Binary PLY &middot; RGB vertex colours</span>
+        </div>
+        <p class="ply-hint">Drag to orbit &middot; Scroll to zoom &middot; Right-drag to pan</p>
       </div>
     </div>
   </section>
@@ -2191,5 +2308,110 @@
     });
 
   </script>
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <!-- Three.js PLY point-cloud viewer -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { PLYLoader } from 'three/addons/loaders/PLYLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    /* Inlined binary PLY (842 vertices) */
+    const PLY_B64 = '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';
+
+    function b64ToBuffer(b64) {
+      const bin = atob(b64.replace(/[^A-Za-z0-9+\/=]/g, ""));
+      const u8  = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+      return u8.buffer;
+    }
+
+    const canvas  = document.getElementById('plyCanvas');
+    const spinner = document.getElementById('plySpinner');
+    const slider  = document.getElementById('pointSizeSlider');
+    const wrap    = document.getElementById('plyViewer');
+
+    if (!canvas || !wrap) { console.warn('PLY viewer: missing DOM elements'); }
+    else {
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setClearColor(0x0d1a20, 1);
+
+      const scene  = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(52, 1, 0.0001, 500);
+      camera.position.set(0, 0, 3);
+
+      const controls = new OrbitControls(camera, canvas);
+      controls.enableDamping   = true;
+      controls.dampingFactor   = 0.07;
+      controls.autoRotate      = true;
+      controls.autoRotateSpeed = 0.55;
+      controls.minDistance     = 0.05;
+      controls.maxDistance     = 25;
+      canvas.addEventListener('pointerdown', () => { controls.autoRotate = false; }, { passive: true });
+
+      function resize() {
+        const w = wrap.clientWidth;
+        const h = wrap.clientHeight || 440;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      new ResizeObserver(resize).observe(wrap);
+      resize();
+
+      let geo;
+      try {
+        geo = (new PLYLoader()).parse(b64ToBuffer(PLY_B64));
+      } catch (e) {
+        console.error('PLY parse error:', e);
+        spinner.querySelector('span').textContent = 'Failed to parse point cloud.';
+        throw e;
+      }
+
+      geo.computeBoundingBox();
+      const ctr = new THREE.Vector3();
+      geo.boundingBox.getCenter(ctr);
+      geo.translate(-ctr.x, -ctr.y, -ctr.z);
+      geo.computeBoundingBox();
+      const sz = new THREE.Vector3();
+      geo.boundingBox.getSize(sz);
+      const k = 2.4 / (Math.max(sz.x, sz.y, sz.z) || 1);
+      geo.scale(k, k, k);
+
+      const hasColour = !!geo.attributes.color;
+      const mat = new THREE.PointsMaterial({
+        size:            parseFloat(slider.value) * 0.02,
+        vertexColors:    hasColour,
+        color:           hasColour ? 0xffffff : 0xc9a227,
+        sizeAttenuation: true,
+      });
+
+      scene.add(new THREE.Points(geo, mat));
+
+      spinner.classList.add('hidden');
+      setTimeout(() => { spinner.style.display = 'none'; }, 500);
+
+      slider.addEventListener('input', () => {
+        mat.size = parseFloat(slider.value) * 0.02;
+      });
+
+      (function loop() {
+        requestAnimationFrame(loop);
+        controls.update();
+        renderer.render(scene, camera);
+      })();
+    }
+  </script>
+
 </body>
 </html>
